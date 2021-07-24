@@ -7,6 +7,7 @@ import org.junit.jupiter.api.condition.OS;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+@DisplayName("When testing class MathUtil")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MathUtilsTest {
 
@@ -23,17 +24,17 @@ class MathUtilsTest {
 //        System.out.println("AfterAll starting");
 //    }
 
+    @AfterEach
+    void cleanUp() {
+        a++;
+        System.out.println("Cleaning up");
+        System.out.println("a = " + a + "\n");
+    }
+
     @BeforeEach
     void init() {
         utils = new MathUtils();
     }
-
-//    @AfterEach
-//    void cleanUp() {
-//        a++;
-//        System.out.println("Cleaning up");
-//        System.out.println("a = " + a + "\n");
-//    }
 
     @Test
     @DisplayName("Testing add() method")
@@ -49,6 +50,23 @@ class MathUtilsTest {
         assertEquals(expected, actual);
     }
 
+    @Nested
+    @DisplayName("Testing add method")
+    class AddTestClass {
+
+        @Test
+        @DisplayName("When testing positive numbers")
+        void addPositive() {
+            assertEquals(5, utils.add(3, 2));
+        }
+
+        @Test
+        @DisplayName("When testing negative numbers")
+        void addNegative() {
+            assertEquals(-8, utils.add(-10, 2));
+        }
+    }
+
     @Test
     @Disabled
     @DisplayName("TDD test, shouldn't run")
@@ -58,10 +76,24 @@ class MathUtilsTest {
     }
 
     @Test
+    @DisplayName("Multiply test")
+    void multiply() {
+        assertAll(
+                () -> assertEquals(2, utils.multiply(2, 1)),
+                () -> assertEquals(0, utils.multiply(15, 0)),
+                () -> assertEquals(-5, utils.multiply(5, -1))
+        );
+    }
+
+    @Test
     void calculateCircleAreaTest() {
-        boolean isRegistered = false;
+        boolean isRegistered = true;
+        double expected = 314.1592653589793;
+        double actual = utils.calculateCircleArea(10);
+
         assumeTrue(isRegistered);
-        assertEquals(314.1592653589793, utils.calculateCircleArea(10), "Should return correct circle area");
+        assertEquals(expected, actual,
+                () -> "Should return " + expected + ", but returned " + actual);
     }
 
     @Test
