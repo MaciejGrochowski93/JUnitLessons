@@ -75,6 +75,17 @@ class MathUtilsTest {
 //        System.out.println("It shouldn't appear");
     }
 
+    @RepeatedTest(3)
+    @DisplayName("Testing if 2 multiplied negatives return positive")
+    void multiplyNegative(RepetitionInfo repetitionInfo) {
+        if (repetitionInfo.getCurrentRepetition() == 2) {
+            System.out.println("It's 2nd repetition");
+        } else {
+            System.out.println("It's not 2nd repetition");
+        }
+        assertEquals(6, utils.multiply(-3, -2), "Should return positive number");
+    }
+
     @Test
     @DisplayName("Multiply test")
     void multiply() {
