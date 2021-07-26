@@ -12,6 +12,8 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 class MathUtilsTest {
 
     MathUtils utils;
+    TestInfo testInfo;
+    TestReporter testReporter;
     int a = 1;
 
 //    @BeforeAll
@@ -26,18 +28,20 @@ class MathUtilsTest {
 
     @AfterEach
     void cleanUp() {
-        a++;
-        System.out.println("Cleaning up");
-        System.out.println("a = " + a + "\n");
+
     }
 
     @BeforeEach
-    void init() {
+    void init(TestInfo testInfo, TestReporter testReporter) {
+        this.testInfo = testInfo;
+        this.testReporter = testReporter;
         utils = new MathUtils();
+        testReporter.publishEntry(testInfo.getDisplayName() + ", from Tag: " + testInfo.getTags() + "\n");
     }
 
     @Test
     @DisplayName("Testing add() method")
+    @Tag("Math")
     void addTest() {
         int expected = 2;
         int actual = utils.add(1, 1);
@@ -76,6 +80,7 @@ class MathUtilsTest {
     }
 
     @RepeatedTest(3)
+    @Tag("Math")
     @DisplayName("Testing if 2 multiplied negatives return positive")
     void multiplyNegative(RepetitionInfo repetitionInfo) {
         if (repetitionInfo.getCurrentRepetition() == 2) {
